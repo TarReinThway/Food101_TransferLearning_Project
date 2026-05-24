@@ -30,12 +30,13 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 def predict_image(img_path):
-    img = image.load_img(img_path, target_size = IMG_SIZE)
-    img_array = image.img_to_array(img)
-    img_array = np.expand_dims(img_array, axis = 0)
-    img_array = preprocess_input(img_array)
+    img = tf.io.read_file(img_path)
+    img = tf.image.decode_jpeg(img, channels=3)
+    img = tf.image.resize(img, IMG_SIZE)
+    img = tf.cast(img, tf.float32)
+    img = preprocess_input(img)
 
-    predictions = model.predict(img_array)[0]
+    predictions = model.predict(img)[0]
     sorted_indices = np.argsort(predictions)[::-1]
 
     top_5_predictions = []
