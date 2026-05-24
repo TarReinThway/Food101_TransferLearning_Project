@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tar Rein Thway • Food Classification</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            --panel-bg: rgba(255, 255, 255, 0.03);
+            --panel-border: rgba(255, 255, 255, 0.08);
+            --accent-primary: #8b5cf6;
+            --accent-secondary: #d946ef;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        body::before, body::after {
+            content: ''; position: absolute; width: 300px; height: 300px; border-radius: 50%;
+            background: var(--accent-primary); filter: blur(120px); opacity: 0.15; z-index: -1;
+        }
+        body::before { top: 10%; left: 15%; }
+        body::after { bottom: 10%; right: 15%; background: var(--accent-secondary); }
+
+        .container {
+            background: var(--panel-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--panel-border);
+            padding: 40px;
+            border-radius: 24px;
+            width: 100%;
+            max-width: 460px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        header h2 {
+            font-size: 24px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 8px;
+            background: linear-gradient(to right, #fff, var(--text-muted));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        header p { font-size: 14px; color: var(--text-muted); margin-bottom: 12px; }
+        header p.subtitle { font-size: 12px; margin-bottom: 32px; color: #64748b;}
+
+        .dropzone {
+            position: relative;
+            border: 2px dashed rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            padding: 35px 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: rgba(255, 255, 255, 0.01);
+        }
+
+        .dropzone:hover, .dropzone.dragover, .dropzone.focused {
+            border-color: var(--accent-primary);
+            background: rgba(139, 92, 246, 0.04);
+        }
+
+        .dropzone input[type=file] {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            opacity: 0; cursor: pointer;
+        }
+
+        .dropzone-icon { font-size: 32px; margin-bottom: 12px; display: inline-block; }
+        .dropzone-text { font-size: 14px; font-weight: 500; color: #cbd5e1; }
+        .file-chosen-name { margin-top: 8px; font-size: 12px; color: var(--accent-secondary); font-weight: 500; word-break: break-all; }
+
+        #paste-preview-container {
+            display: none;
+            margin-top: 15px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1);
+            max-height: 120px;
+        }
+        #paste-preview-container img {
+            width: 100%; height: 120px; object-fit: cover;
+        }
+
+        button[type="submit"] {
+            width: 100%; padding: 14px; margin-top: 24px; border: none;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white; font-size: 15px; font-weight: 600; border-radius: 12px;
+            cursor: pointer; box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+            transition: all 0.2s ease;
+        }
+
+        button[type="submit"]:hover {
+            transform: translateY(-1px); box-shadow: 0 6px 20px rgba(139, 92, 246, 0.5);
+        }
+
+        button[type="submit"]:disabled {
+            opacity: 0.5; cursor: not-allowed; transform: none;
+        }
+
+        /* Results Component */
+        .results-card {
+            margin-top: 32px; padding-top: 32px;
+            border-top: 1px solid var(--panel-border);
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .img-wrapper {
+            position: relative; border-radius: 16px; overflow: hidden;
+            margin-bottom: 24px; box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .img-wrapper img { width: 100%; height: auto; max-height: 260px; object-fit: cover; display: block; }
+
+        .metrics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px;}
+        .metric-box { background: rgba(255, 255, 255, 0.02); border: 1px solid var(--panel-border); padding: 14px; border-radius: 12px; text-align: left; }
+        .metric-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 4px; }
+        .metric-value { font-size: 18px; font-weight: 600; color: #fff; text-transform: capitalize; }
+        .metric-value.highlight { background: linear-gradient(to right, #38bdf8, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        /* Top 5 Breakdowns Styles */
+        .top5-title { font-size: 13px; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-muted); margin-bottom: 12px; font-weight: 600; }
+        .top5-list { display: flex; flex-direction: column; gap: 10px; }
+        .top5-item { background: rgba(255, 255, 255, 0.01); border: 1px solid rgba(255,255,255,0.03); padding: 10px 12px; border-radius: 8px; }
+        .top5-info { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px; }
+        .top5-name { font-weight: 500; color: #cbd5e1; text-transform: capitalize; }
+        .top5-bar-bg { width: 100%; height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; }
+        .top5-bar-fill { height: 100%; background: linear-gradient(to right, var(--accent-primary), var(--accent-secondary)); border-radius: 3px; transition: width 0.6s ease; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h2>Food Classification</h2>
+            <p>by Tar Rein Thway - PIUS20220022</p>
+            <p class="subtitle">Upload, drag, or press Ctrl+V to paste an image</p>
+        </header>
+
+        <form id="upload-form">
+            <div class="dropzone" id="dropzone" tabindex="0">
+                <span class="dropzone-icon">📋</span>
+                <div class="dropzone-text" id="dropzone-text">Click & paste image, or click to browse</div>
+                <div class="file-chosen-name" id="file-name"></div>
+                <input type="file" name="file" id="file-input" accept="image/*">
+                
+                <div id="paste-preview-container">
+                    <img id="paste-preview" src="" alt="Pasted snapshot">
+                </div>
+            </div>
+            
+            <button type="submit" id="submit-btn">Analyze Image</button>
+        </form>
+
+        <div id="dynamic-results">
+            {% if filename %}
+                <div class="results-card">
+                    <div class="img-wrapper">
+                        <img id="prediction-img" src="{{ url_for('static', filename='uploads/' + filename) }}" alt="Prediction Sample">
+                    </div>
+                    
+                    <div class="metrics-grid">
+                        <div class="metric-box">
+                            <div class="metric-label">Prediction</div>
+                            <div class="metric-value highlight">{{ prediction.replace('_', ' ') }}</div>
+                        </div>
+                        <div class="metric-box">
+                            <div class="metric-label">Confidence</div>
+                            <div class="metric-value">{{ confidence }}%</div>
+                        </div>
+                    </div>
+
+                    <div class="top5-section">
+                        <div class="top5-title">Top 5 Predictions</div>
+                        <div class="top5-list">
+                            {% for item in top_5 %}
+                            <div class="top5-item">
+                                <div class="top5-info">
+                                    <span class="top5-name">{{ item.class.replace('_', ' ') }}</span>
+                                    <span class="top5-conf" style="color: {% if loop.first %}#38bdf8{% else %}var(--text-muted){% endif %}; font-weight: {% if loop.first %}600{% else %}400{% endif %};">
+                                        {{ item.confidence }}%
+                                    </span>
+                                </div>
+                                <div class="top5-bar-bg">
+                                    <div class="top5-bar-fill" style="width: {{ item.confidence }}%; {% if loop.first %}background: linear-gradient(to right, #38bdf8, #818cf8);{% endif %}"></div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        const fileInput = document.getElementById('file-input');
+        const fileNameDiv = document.getElementById('file-name');
+        const dropzoneText = document.getElementById('dropzone-text');
+        const dropzone = document.getElementById('dropzone');
+        const pastePreviewContainer = document.getElementById('paste-preview-container');
+        const pastePreview = document.getElementById('paste-preview');
+        const uploadForm = document.getElementById('upload-form');
+        const submitBtn = document.getElementById('submit-btn');
+        const resultsDiv = document.getElementById('dynamic-results');
+
+        let pastedFileBlob = null;
+
+        dropzone.addEventListener('focus', () => dropzone.classList.add('focused'));
+        dropzone.addEventListener('blur', () => dropzone.classList.remove('focused'));
+
+        fileInput.addEventListener('change', () => {
+            if(fileInput.files.length > 0) {
+                pastedFileBlob = null; 
+                pastePreviewContainer.style.display = 'none';
+                fileNameDiv.textContent = fileInput.files[0].name;
+                dropzoneText.textContent = "Image ready";
+            }
+        });
+
+        window.addEventListener('paste', (e) => {
+            const items = (e.clipboardData || e.originalEvent.clipboardData).items;
+            
+            for (let item of items) {
+                if (item.type.indexOf("image") !== -1) {
+                    const blob = item.getAsFile();
+                    pastedFileBlob = blob; 
+                    fileInput.value = "";  
+                    
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        pastePreview.src = event.target.result;
+                        pastePreviewContainer.style.display = 'block';
+                        fileNameDiv.textContent = "📋 Image detected from Clipboard!";
+                        dropzoneText.textContent = "Press Analyze below";
+                    };
+                    reader.readAsDataURL(blob);
+                    break;
+                }
+            }
+        });
+
+        uploadForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            let formData = new FormData();
+
+            if (pastedFileBlob) {
+                formData.append('file', pastedFileBlob, 'pasted_image.png');
+            } else if (fileInput.files.length > 0) {
+                formData.append('file', fileInput.files[0]);
+            } else {
+                alert('Please pick or paste an image first.');
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = "Analyzing patterns...";
+
+            try {
+                const response = await fetch(window.location.href, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    const htmlResult = await response.text();
+                    
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(htmlResult, 'text/html');
+                    
+                    const newResultsCardHTML = doc.getElementById('dynamic-results').innerHTML;
+                    resultsDiv.innerHTML = newResultsCardHTML;
+                    
+                    // --- CACHE BUSTER FIX ---
+                    const targetImg = resultsDiv.querySelector('#prediction-img');
+                    if (targetImg) {
+                        const cleanSrc = targetImg.src.split('?')[0]; 
+                        targetImg.src = cleanSrc + '?t=' + new Date().getTime();
+                    }
+                    // -------------------------
+
+                    // Reset form variables
+                    pastedFileBlob = null;
+                    pastePreviewContainer.style.display = 'none';
+                    fileNameDiv.textContent = "";
+                    dropzoneText.textContent = "Click & paste image, or click to browse";
+                    uploadForm.reset();
+
+                } else {
+                    alert('Analysis failed. Please check server status logs.');
+                }
+            } catch (err) {
+                console.error(err);
+                alert('Error submitting payload request.');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = "Analyze Image";
+            }
+        });
+    </script>
+</body>
+</html>
