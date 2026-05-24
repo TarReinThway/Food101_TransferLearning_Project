@@ -37,6 +37,7 @@ def predict_image(img_path):
     img = tf.image.resize(img, IMG_SIZE)
     img = tf.cast(img, tf.float32)
     img = preprocess_input(img)
+    img = tf.expand_dims(img, axis=0)
 
     predictions = model.predict(img)[0]
     sorted_indices = np.argsort(predictions)[::-1]
