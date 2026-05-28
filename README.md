@@ -8,10 +8,11 @@ This repository covers the entire data science lifecycle: from raw images to a d
 
 ## 📱 The Live Web Application
 
-| 1. Upload Interface | 2. Real-Time Model Prediction |
-| :---: | :---: |
-| <img src="Images/webapp_ui.png" width="400"> | <img src="Images/webapp_prediction.png" width="220"> |
-| *Clean, drag-and-drop web portal.* | *Top-5 dish breakdown with confidence scores.* |
+### 1. Upload Interface
+<img src="Images/webapp_ui.png" alt="Clean, drag-and-drop web portal" width="100%">
+
+### 2. Real-Time Model Prediction
+<img src="Images/webapp_prediction.jpg" alt="Top-5 dish breakdown with confidence scores" width="100%">
 
 > **How to use this webapp?** Just choose the image from your file, click analyze and get results! Alternatively, if you are on a browser, you can copy any image online, hover mouse over the box and paste the image, then analyze to get the results!
 
@@ -19,7 +20,10 @@ This repository covers the entire data science lifecycle: from raw images to a d
 
 ## 📁 Repository Structure
 
-* `app/`: Contains the backend Flask application (`app.py`), HTML interfaces (`templates/`), and upload folder for storing uploaded images (`static/uploads`)
+* `app/`: Contains the backend Flask application (`app.py`), HTML interfaces (`templates/`), and the upload directory (`static/uploads`) for temporarily caching user images.
 * `Code Notebook/`: The step-by-step Jupyter Notebook where the model was trained and evaluated.
-* `guides_&_docs/`: In-depth educational guides, including an `annotated_references.md` where the resouces that were helpful to me in writing this project is shared with annotations. In a few days, `food101_code_walkthrough.pdf` where I will be explaning every code, their logic & reasoning as well as CNN + Transfer Learning concepts in details with SDS students who have taken introduction to python in mind, as well as `food101_project_report.pdf` where I will upload a report of the project. 
-* `presentation/`: Slides used during presentation. 
+* `presentation/`: Slides used during the project evaluation and presentation. 
+* `guides_&_docs/`: In-depth educational documentation curated specifically for SDS juniors:
+  * 📄 `annotated_references.md` - A hand-picked literature list detailing the academic resources that shaped this project, complete with personal notes.
+  * ⏳ `food101_code_walkthrough.pdf` *(Coming in a few days!)* - A detailed, informal guide breaking down every line of code, logical reasoning, and core CNN + Transfer Learning concepts—tailored specifically for students who have only taken an introduction to Python.
+  * ⏳ `food101_project_report.pdf` *(Coming in a few days!)* - A formal, research-style paper detailing the project's background, technical methodology, and experimental results.
