@@ -10,7 +10,7 @@ This repository covers the entire data science lifecycle: from raw images to a d
 
 | 1. Upload Interface | 2. Real-Time Model Prediction |
 | :---: | :---: |
-| <img src="Images/webapp_ui.png" width="400"> | <img src="Images/webapp_prediction.jpg" width="220"> |
+| <img src="Images/webapp_ui.png" width="400"> | <img src="Images/webapp_prediction.png" width="220"> |
 | *Clean, drag-and-drop web portal.* | *Top-5 dish breakdown with confidence scores.* |
 
 > **How to use this webapp?** Just choose the image from your file, click analyze and get results! Alternatively, if you are on a browser, you can copy any image online, hover mouse over the box and paste the image, then analyze to get the results!
