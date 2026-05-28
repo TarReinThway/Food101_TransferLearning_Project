@@ -5,3 +5,5 @@ numpy==1.26.0, <2.0.0
 pillow==10.3.0
 h5py==3.10.0
 python-dotenv
+azure-storage-blob
+azure-identity
