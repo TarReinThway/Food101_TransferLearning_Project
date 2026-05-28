@@ -22,8 +22,8 @@ This repository covers the entire data science lifecycle: from raw images to a d
 
 * `app/`: Contains the backend Flask application (`app.py`), HTML interfaces (`templates/`), and the upload directory (`static/uploads`) for temporarily caching user images.
 * `Code Notebook/`: The step-by-step Jupyter Notebook where the model was trained and evaluated.
-* `presentation/`: Slides used during the project evaluation and presentation. 
+* `presentation/`: Slides used during presentation. 
 * `guides_&_docs/`: In-depth educational documentation curated specifically for SDS juniors:
-  * 📄 `annotated_references.md` - A hand-picked literature list detailing the academic resources that shaped this project, complete with personal notes.
-  * ⏳ `food101_code_walkthrough.pdf` *(Coming in a few days!)* - A detailed, informal guide breaking down every line of code, logical reasoning, and core CNN + Transfer Learning concepts—tailored specifically for students who have only taken an introduction to Python.
+  * 📄 `annotated_references.md` - A hand-picked literature list detailing the resources used for this project, complete with personal notes.
+  * ⏳ `food101_code_walkthrough.pdf` *(Coming in a few days!)* - A detailed, informal guide breaking down every line of code, logical reasoning, and core CNN + Transfer Learning concepts—tailored specifically for students who have only taken an introduction to Python course.
   * ⏳ `food101_project_report.pdf` *(Coming in a few days!)* - A formal, research-style paper detailing the project's background, technical methodology, and experimental results.
