@@ -12,7 +12,7 @@ This repository covers the entire data science lifecycle: from raw images to a d
 <img src="Images/webapp_ui.png" alt="Clean, drag-and-drop web portal" width="100%">
 
 ### 2. Real-Time Model Prediction
-<img src="Images/webapp_prediction.jpg" alt="Top-5 dish breakdown with confidence scores" width="100%">
+<img src="Images/webapp_prediction.png" alt="Top-5 dish breakdown with confidence scores" width="100%">
 
 > **How to use this webapp?** Just choose the image from your file, click analyze and get results! Alternatively, if you are on a browser, you can copy any image online, hover mouse over the box and paste the image, then analyze to get the results!
 
