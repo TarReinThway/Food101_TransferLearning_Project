@@ -40,7 +40,7 @@ Basic knowledge about how neural networks work and some understanding of `scikit
 3. **But what is a convolution?** *by 3Blue1Brown*
    * *link:* [Watch on YouTube](https://youtu.be/KuXjwB4LzSA?si=k95Rvp4jzN9T0tkP)
    * **Annotation:** 
-    >To understand the concept of convolution that underlies Convolutional Neural Network, I want to recommend this video. Grant (Author of 3Blue1Brown) makes really educational videos that's great for data science students. His playlists like Linear Algebra, Neural Networks Series, and Calculus have helped me alot too. 
+    >To understand the concept of convolution that underlies Convolutional Neural Network, I want to recommend this video. Grant Sanderson (Author of 3Blue1Brown) makes really educational videos that's great for data science students. His playlists like Linear Algebra, Neural Networks Series, and Calculus have helped me alot too. 
 
 ---
 
