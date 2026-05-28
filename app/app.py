@@ -33,7 +33,7 @@ def load_model_from_azure():
         blob_service_client = BlobServiceClient(account_url, credential=credential)
         blob_client = blob_service_client.get_blob_client(container="model-weights", blob="food101_densenet201_finetune.keras")
         with open(MODEL_PATH, "wb") as download_file:
-            download_file.write(blob_client.download)blob().readall())
+            download_file.write(blob_client.download)blob().readall()
     return tf.keras.models.load_model(MODEL_PATH)
 
 model = load_model_from_azure()
