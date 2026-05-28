@@ -54,10 +54,10 @@ Basic knowledge about how neural networks work and some understanding of `scikit
     * *Link:* [Read Paper PDF](https://cs230.stanford.edu/projects_fall_2020/reports/55825128.pdf)
 
 3. **Bossard, L., Guillaumin, M., & Van Gool, L. (2014, September).** *Food-101–mining discriminative components with random forests.* In European conference on computer vision (pp. 446-461). Cham: Springer International Publishing.
-    **Annotation:** 
+    * **Annotation:** 
            >This is the original paper for the food 101 dataset. I recommend reading section 3 that talks about the dataset.
 
 4. **Huang, G., Liu, Z., Van Der Maaten, L., & Weinberger, K. Q. (2017).** *Densely connected convolutional networks.* In Proceedings of the IEEE conference on computer vision and pattern recognition (pp. 4700-4708).
-    **Annotation:** 
+    * **Annotation:** 
            >This is the paper for DenseNet that I have used. 
 
