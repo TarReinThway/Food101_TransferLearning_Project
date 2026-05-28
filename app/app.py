@@ -25,6 +25,7 @@ CONTAINER_NAME = "model-weights"
 BLOB_NAME = "food101_densenet201_finetune.keras"
 
 MODEL_PATH = "/tmp/food101_densenet201_finetune.keras"
+model = None
 
 def load_model_from_azure():
     global model
