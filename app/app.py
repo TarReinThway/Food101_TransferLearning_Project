@@ -50,7 +50,7 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 def predict_image(img_path):
-    model = load_model_from_azure()
+    trained_model = load_model_from_azure()
     
     img = tf.io.read_file(img_path)
     img = tf.image.decode_jpeg(img, channels=3)
@@ -59,7 +59,7 @@ def predict_image(img_path):
     img = preprocess_input(img)
     img = tf.expand_dims(img, axis=0)
 
-    predictions = model.predict(img)[0]
+    predictions = trained_model.predict(img)[0]
     sorted_indices = np.argsort(predictions)[::-1]
 
     top_5_predictions = []
