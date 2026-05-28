@@ -7,6 +7,9 @@ from tensorflow.keras.applications.densenet import preprocess_input
 import os
 from dotenv import load_dotenv
 
+from azure.identity import DefaultAzureCredential
+from azure.storage.blob import BlobServiceClient
+
 load_dotenv()
 
 app = Flask(__name__)
@@ -17,8 +20,25 @@ RECEIVER_EMAIL = os.getenv('RECEIVER_EMAIL')
 
 os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
 
-#Loading Model
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+AZURE_STORAGE_ACCOUNT = "fooddddstorage"
+CONTAINER_NAME = "model-weights"
+BLOB_NAME = "food101_densenet201_finetune.keras"
+
+MODEL_PATH = "/tmp/food101_densenet201_finetune.keras"
+
+def load_model_from_azure():
+    if not os.path.exists(MODEL_PATH):
+        account_url = f"https://fooddddstorage.blob.core.windows.net"
+        credential = DefaultAzureCredential()
+        blob_service_client = BlobServiceClient(account_url, credential=credential)
+        blob_client = blob_service_client.get_blob_client(container="model-weights", blob="food101_densenet201_finetune.keras")
+        with open(MODEL_PATH, "wb") as download_file:
+            download_file.write(blob_client.download)blob().readall())
+    return tf.keras.models.load_model(MODEL_PATH)
+
+model = load_model_from_azure()
+        
+
 MODEL_PATH = os.path.join(BASE_DIR, "food101_densenet201_finetune.keras")
 model = tf.keras.models.load_model(MODEL_PATH)
 
