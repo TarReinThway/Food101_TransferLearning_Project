@@ -19,13 +19,16 @@ os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
 
 #Loading Model
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-PATH_OPTION_1 = os.path.join(BASE_DIR, "food101_densenet201_finetune.keras")
+PATH_A = os.path.join(BASE_DIR, "food101_densenet201_finetune.keras")
+PATH_B = os.path.abspath("food101_densenet201_finetune.keras")
+PATH_C = os.path.abspath("app/food101_densenet201_finetune.keras")
 
-if os.path.exists(path_option_1):
-    MODEL_PATH = path_option_1
+if os.path.exists(PATH_A):
+    MODEL_PATH = PATH_A
+elif os.path.exists(PATH_B):
+    MODEL_PATH = PATH_B
 else: 
-    MODEL_PATH = os.path.abspath("app/food101_densenet201_finetune.keras")
-
+    MODEL_PATH = PATH_C
 model = tf.keras.models.load_model(MODEL_PATH)
 
 #Class names
