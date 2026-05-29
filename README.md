@@ -1,8 +1,9 @@
 #  🍳 FOOD Classification 
 
-> **What is this project?** This is the final project of Advanced Machine Learning Course taught by Professor Nwe Nwe Htay Win. It is an image classification project meant to classify between 101 different type of foods.
+> **About this project**
+> This project was developed as the final assignment for the Advanced Machine Learning course taught by Professor Nwe Nwe Htay Win. The goal of the project is to classify images across 101 different food categories using deep learning and transfer learning techinques.
 
-This repository covers the entire data science lifecycle: from raw images to a deep learning model and an interactive [web application](https://foodddd-ftfqhgejajahhcen.japaneast-01.azurewebsites.net) hosted on Microsoft Azure.
+This repository covers the complete machine learning workflow -- from dataset preparation and model training to deployment through an interactive [web application](https://foodddd-ftfqhgejajahhcen.japaneast-01.azurewebsites.net) hosted on Microsoft Azure.
 
 ---
 
@@ -14,16 +15,21 @@ This repository covers the entire data science lifecycle: from raw images to a d
 ### 2. Real-Time Model Prediction
 <img src="Images/webapp_prediction.png" alt="Top-5 dish breakdown with confidence scores" width="100%">
 
-> **How to use this webapp?** Just choose the image from your file, click analyze and get results! Alternatively, if you are on a browser, you can copy any image online, hover mouse over the box and paste the image, then analyze to get the results!
+> **How to use the web app**
+> Upload an image from your device and click **Analyze Image** to receive predictions from the model!
+> You can also copy an image directly from the internet and paste it into the upload area, and analyze it instantly!
 
 ---
 
 ## 📁 Repository Structure
 
-* `app/`: Contains the backend Flask application (`app.py`), HTML interfaces (`templates/`), and the upload directory (`static/uploads`) for temporarily caching user images.
-* `Code Notebook/`: The step-by-step Jupyter Notebook where the model was trained and evaluated.
-* `presentation/`: Slides used during presentation. 
-* `guides_&_docs/`: In-depth educational documentation curated specifically for SDS juniors:
-  * 📄 `annotated_references.md` - A hand-picked literature list detailing the resources used for this project, complete with personal notes.
-  * ⏳ `food101_code_walkthrough.pdf` *(Coming in a few days!)* - A detailed, informal guide breaking down every line of code, logical reasoning, and core CNN + Transfer Learning concepts—tailored specifically for students who have only taken an introduction to Python course.
-  * ⏳ `food101_project_report.pdf` *(Coming in a few days!)* - A formal, research-style paper detailing the project's background, technical methodology, and experimental results.
+* `app/`: Contains the backend Flask application (`app.py`), HTML templates (`templates/`), and the upload directory (`static/uploads`) for temporarily storing uploaded images.
+* `Code Notebook/`: Includes the step-by-step Jupyter Notebook used for model training and evaluation.
+* `presentation/`: Presentation slides used during the final project presentation.
+* `guides_&_docs/`: Additional documentation and resources created for students interested in CNNs and transfer learning:
+  * 📄 `annotated_references.md`
+     A curated list of references, YouTube videos and learning resources used throughout the project, along with personal notes and summaries..
+  * ⏳ `food101_code_walkthrough.pdf` *(Coming in a few days!)*
+    A detailed walkthrough explaining the project's code structure, implementation choices, and core CNN + tranfser learning concepts in a beginner-friendly manner
+  * ⏳ `food101_project_report.pdf` *(Coming in a few days!)*
+    A formal research-style report covering the project's motivation, methodology, experiments, and results.
