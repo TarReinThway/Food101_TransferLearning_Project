@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, requestm redirect, url_for, flash
 import tensorflow as tf
 import tensorflow.keras as keras
 import numpy as np
@@ -19,16 +19,21 @@ os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
 
 #Loading Model
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-MODEL_PATH = os.path.join(BASE_DIR, "food101_densenet201_finetune.keras")
+PATH_OPTION_1 = os.path.join(BASE_DIR, "food101_densenet201_finetune.keras")
+
+if os.path.exists(path_option_1):
+    MODEL_PATH = path_option_1
+else: 
+    MODEL_PATH = os.path.abspath("app/food101_densenet201_finetune.keras")
+
 model = tf.keras.models.load_model(MODEL_PATH)
 
 #Class names
 class_names = ['apple_pie', 'baby_back_ribs', 'baklava', 'beef_carpaccio', 'beef_tartare', 'beet_salad', 'beignets', 'bibimbap', 'bread_pudding', 'breakfast_burrito', 'bruschetta', 'caesar_salad', 'cannoli', 'caprese_salad', 'carrot_cake', 'ceviche', 'cheesecake', 'cheese_plate', 'chicken_curry', 'chicken_quesadilla', 'chicken_wings', 'chocolate_cake', 'chocolate_mousse', 'churros', 'clam_chowder', 'club_sandwich', 'crab_cakes', 'creme_brulee', 'croque_madame', 'cup_cakes', 'deviled_eggs', 'donuts', 'dumplings', 'edamame', 'eggs_benedict', 'escargots', 'falafel', 'filet_mignon', 'fish_and_chips', 'foie_gras', 'french_fries', 'french_onion_soup', 'french_toast', 'fried_calamari', 'fried_rice', 'frozen_yogurt', 'garlic_bread', 'gnocchi', 'greek_salad', 'grilled_cheese_sandwich', 'grilled_salmon', 'guacamole', 'gyoza', 'hamburger', 'hot_and_sour_soup', 'hot_dog', 'huevos_rancheros', 'hummus', 'ice_cream', 'lasagna', 'lobster_bisque', 'lobster_roll_sandwich', 'macaroni_and_cheese', 'macarons', 'miso_soup', 'mussels', 'nachos', 'omelette', 'onion_rings', 'oysters', 'pad_thai', 'paella', 'pancakes', 'panna_cotta', 'peking_duck', 'pho', 'pizza', 'pork_chop', 'poutine', 'prime_rib', 'pulled_pork_sandwich', 'ramen', 'ravioli', 'red_velvet_cake', 'risotto', 'samosa', 'sashimi', 'scallops', 'seaweed_salad', 'shrimp_and_grits', 'spaghetti_bolognese', 'spaghetti_carbonara', 'spring_rolls', 'steak', 'strawberry_shortcake', 'sushi', 'tacos', 'takoyaki', 'tiramisu', 'tuna_tartare', 'waffles']
 
 IMG_SIZE = (224, 224)
-UPLOAD_FOLDER = "static/uploads"
+UPLOAD_FOLDER = os.path.join(BASE_DIR, "static", "uploads")
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 def predict_image(img_path):
@@ -61,4 +66,28 @@ def predict_image(img_path):
 @app.route('/', methods = ['GET', 'POST'])
 def index():
     if request.method == 'POST':
+        if 'file' not in request.files:
+            return redirect(request.url)
+            
         file = request.files['file']
+        
+        if file.filename == '':
+            return redirect(request.url)
+            
+        if file:
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+            file.save(file_path)
+            predicted_class, predicted_confidence, top_5 = predict_image(file_path)
+            formatted_confidence = round(predicted_confidence * 100, 2)
+            web_accessibile_img_path = f"static/uploads/{file.filename}"
+            return render_template(
+                'index.html',
+                prediction=predicted_class,
+                confidence=formatted_confidence,
+                top_5=top_5,
+                image_path=web_accessible_img_path
+            )
+        return render_template('index.html', prediction=None)
+
+if __name__ == '__main__':
+    app.run(debug=True)
