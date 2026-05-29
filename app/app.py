@@ -1,21 +1,20 @@
-from flask import Flask, render_template, requestm redirect, url_for, flash
+import os
+from dotenv import load_dotenv
+load_dotenv()
+os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
+
+from flask import Flask, render_template, request, redirect, url_for, flash
 import tensorflow as tf
 import tensorflow.keras as keras
 import numpy as np
 from tensorflow.keras.preprocessing import image
 from tensorflow.keras.applications.densenet import preprocess_input 
-import os
-from dotenv import load_dotenv
-
-load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = os.getenv('MY_SECRET_KEY')
 EMAIL_ADDRESS = os.getenv('EMAIL_ADDRESS')
 EMAIL_PASSWORD = os.getenv('EMAIL_PASSWORD')
 RECEIVER_EMAIL = os.getenv('RECEIVER_EMAIL')
-
-os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
 
 #Loading Model
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
