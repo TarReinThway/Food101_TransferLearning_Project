@@ -81,7 +81,7 @@ def index():
             file.save(file_path)
             predicted_class, predicted_confidence, top_5 = predict_image(file_path)
             formatted_confidence = round(predicted_confidence * 100, 2)
-            web_accessibile_img_path = f"static/uploads/{file.filename}"
+            web_accessible_img_path = f"static/uploads/{file.filename}"
             return render_template(
                 'index.html',
                 prediction=predicted_class,
@@ -89,7 +89,7 @@ def index():
                 top_5=top_5,
                 image_path=web_accessible_img_path
             )
-        return render_template('index.html', prediction=None)
+    return render_template('index.html', prediction=None)
 
 if __name__ == '__main__':
     app.run(debug=True)
