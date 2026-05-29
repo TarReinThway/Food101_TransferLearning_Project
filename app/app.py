@@ -30,14 +30,23 @@ model = None
 def load_model_from_azure():
     global model
     if model is None:
-        if not os.path.exists(MODEL_PATH):
+        if not os.path.exists(MODEL_PATH) or os.path.getsize(MODEL_PATH) == 0:
+            if os.path.exists(MODEL_PATH):
+                os.remove(MODEL_PATH)
             account_url = f"https://fooddddstorage.blob.core.windows.net"
             credential = DefaultAzureCredential()
             blob_service_client = BlobServiceClient(account_url, credential=credential)
             blob_client = blob_service_client.get_blob_client(container="model-weights", blob="food101_densenet201_finetune.keras")
             with open(MODEL_PATH, "wb") as download_file:
                 download_file.write(blob_client.download_blob().readall())
-        model = tf.keras.models.load_model(MODEL_PATH)
+
+        try:
+            model = tf.keras.models.load_model(MODEL_PATH)
+        except Exception as e:
+            print(f"Error Loading Model")
+            if os.path.exists(MODEL_PATH):
+                os.remove(MODEL_PATH)
+            raise e
     return model
 
 #Class names
