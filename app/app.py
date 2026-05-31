@@ -98,7 +98,7 @@ def index():
                 )
             except Exception as e:
                 print(f"ERROR: {str(e)}")
-                return f"Prediction failed. Error log: {str(e)}, 500
+                return f"Prediction failed. Error log: {str(e)}", 500
     return render_template('index.html', prediction=None)
 
 if __name__ == '__main__':
