@@ -1,7 +1,6 @@
 Flask==3.0.3
 gunicorn==22.0.0
-tensorflow-cpu==2.16.1
-numpy==1.26.0, <2.0.0
+numpy==1.26.4
 pillow==10.3.0
-h5py==3.10.0
 python-dotenv
+onnxruntime==1.18.0
