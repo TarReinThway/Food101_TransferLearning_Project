@@ -59,6 +59,10 @@ def preprocess(img_path):
     img = Image.open(img_path).convert('RGB')
     img = img.resize(IMG_SIZE)
     img_array = np.array(img, dtype=np.float32)
+    img_array = img_array / 255.0
+    mean = np.array([0.485, 0.456, 0.406], dtype=np.float32)
+    std  = np.array([0.229, 0.224, 0.225], dtype=np.float32)
+    img_array = (img_array - mean) / std
     img_array = np.expand_dims(img_array, axis=0)
     return img_array
 
