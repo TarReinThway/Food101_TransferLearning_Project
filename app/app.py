@@ -83,18 +83,22 @@ def index():
             return redirect(request.url)
             
         if file:
-            file_path = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
-            file.save(file_path)
-            predicted_class, predicted_confidence, top_5 = predict_image(file_path)
-            formatted_confidence = round(predicted_confidence * 100, 2)
-            web_accessible_img_path = f"static/uploads/{file.filename}"
-            return render_template(
-                'index.html',
-                prediction=predicted_class,
-                confidence=formatted_confidence,
-                top_5=top_5,
-                image_path=web_accessible_img_path
-            )
+            try:
+                file_path = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+                file.save(file_path)
+                predicted_class, predicted_confidence, top_5 = predict_image(file_path)
+                formatted_confidence = round(predicted_confidence * 100, 2)
+                web_accessible_img_path = f"static/uploads/{file.filename}"
+                return render_template(
+                    'index.html',
+                    prediction=predicted_class,
+                    confidence=formatted_confidence,
+                    top_5=top_5,
+                    image_path=web_accessible_img_path
+                )
+            except Exception as e:
+                print(f"ERROR: {str(e)}")
+                return f"Prediction failed. Error log: {str(e)}, 500
     return render_template('index.html', prediction=None)
 
 if __name__ == '__main__':
