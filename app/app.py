@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
 load_dotenv()
-os.environ['TF_ENABLE_ONEDNN_OPTS'] = '1'
+os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
 
 from flask import Flask, render_template, request, redirect, url_for, flash
 import tensorflow as tf
@@ -15,6 +15,11 @@ app.secret_key = os.getenv('MY_SECRET_KEY')
 EMAIL_ADDRESS = os.getenv('EMAIL_ADDRESS')
 EMAIL_PASSWORD = os.getenv('EMAIL_PASSWORD')
 RECEIVER_EMAIL = os.getenv('RECEIVER_EMAIL')
+
+gpus = tf.config.experimental.list_physical_devices('GPU')
+if gpus:
+    for gpu in gpus:
+        tf.config.experimental.set_memory_growth(gpu, True)
 
 model = None
 
