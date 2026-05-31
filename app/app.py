@@ -45,21 +45,20 @@ def get_onnx_session():
 #Class names
 class_names = ['apple_pie', 'baby_back_ribs', 'baklava', 'beef_carpaccio', 'beef_tartare', 'beet_salad', 'beignets', 'bibimbap', 'bread_pudding', 'breakfast_burrito', 'bruschetta', 'caesar_salad', 'cannoli', 'caprese_salad', 'carrot_cake', 'ceviche', 'cheesecake', 'cheese_plate', 'chicken_curry', 'chicken_quesadilla', 'chicken_wings', 'chocolate_cake', 'chocolate_mousse', 'churros', 'clam_chowder', 'club_sandwich', 'crab_cakes', 'creme_brulee', 'croque_madame', 'cup_cakes', 'deviled_eggs', 'donuts', 'dumplings', 'edamame', 'eggs_benedict', 'escargots', 'falafel', 'filet_mignon', 'fish_and_chips', 'foie_gras', 'french_fries', 'french_onion_soup', 'french_toast', 'fried_calamari', 'fried_rice', 'frozen_yogurt', 'garlic_bread', 'gnocchi', 'greek_salad', 'grilled_cheese_sandwich', 'grilled_salmon', 'guacamole', 'gyoza', 'hamburger', 'hot_and_sour_soup', 'hot_dog', 'huevos_rancheros', 'hummus', 'ice_cream', 'lasagna', 'lobster_bisque', 'lobster_roll_sandwich', 'macaroni_and_cheese', 'macarons', 'miso_soup', 'mussels', 'nachos', 'omelette', 'onion_rings', 'oysters', 'pad_thai', 'paella', 'pancakes', 'panna_cotta', 'peking_duck', 'pho', 'pizza', 'pork_chop', 'poutine', 'prime_rib', 'pulled_pork_sandwich', 'ramen', 'ravioli', 'red_velvet_cake', 'risotto', 'samosa', 'sashimi', 'scallops', 'seaweed_salad', 'shrimp_and_grits', 'spaghetti_bolognese', 'spaghetti_carbonara', 'spring_rolls', 'steak', 'strawberry_shortcake', 'sushi', 'tacos', 'takoyaki', 'tiramisu', 'tuna_tartare', 'waffles']
 
-print(f"[STARTUP] BASE_DIR: {BASE_DIR}")
-print(f"[STARTUP] MODEL_PATH: {MODEL_PATH}")
-print(f"[STARTUP] Model exists: {os.path.exists(MODEL_PATH)}")
-print(f"[STARTUP] Loading model now...")
-get_onnx_session()  # load eagerly, not lazily
-print(f"[STARTUP] Model loaded successfully!")
+try: 
+    print(f"[STARTUP] BASE_DIR: {BASE_DIR}")
+    print(f"[STARTUP] MODEL_PATH: {MODEL_PATH}")
+    print(f"[STARTUP] Model exists: {os.path.exists(MODEL_PATH)}")
+    print(f"[STARTUP] Loading model now...")
+    get_onnx_session()  # load eagerly, not lazily
+    print(f"[STARTUP] Model loaded successfully!")
+except Exception as e:
+    print(f"[STARTUP] Model Load Failed: {e}")
 
 def preprocess(img_path):
     img = Image.open(img_path).convert('RGB')
     img = img.resize(IMG_SIZE)
     img_array = np.array(img, dtype=np.float32)
-    img_array = img_array / 255.0
-    mean = np.array([0.485, 0.456, 0.406], dtype=np.float32)
-    std = np.array([0.229, 0.224, 0.225], dtype=np.float32)
-    img_array = (img_array - mean) / std
     img_array = np.expand_dims(img_array, axis=0)
     return img_array
 
@@ -70,7 +69,6 @@ def predict_image(img_path):
 
     raw_outputs = session.run(None, {in_name: preprocessed_img})
     predictions = raw_outputs[0][0]
-
     sorted_indices = np.argsort(predictions)[::-1]
 
     top_5_predictions = []
@@ -111,7 +109,7 @@ def index():
                     prediction=predicted_class,
                     confidence=formatted_confidence,
                     top_5=top_5,
-                    image_path=web_accessible_img_path
+                    filename=file.filename
                 )
             except Exception as e:
                 print(f"ERROR: {str(e)}")
